@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Capstone</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+</head>
+<body>
+<div class="box container">
+    <header>
+        <h2>Capstone: Automatic Cake Decorator for the Home Cook</h2>
+    </header>
+    <hr />
+    <section>
+        <img style="width:100%;" src="images/cake.png">
+        <p align="center">Initial Cake Decorator Design</p>
+
+    </section>
+<hr />
+    <section>
+        <header>
+            <h3>Objective</h3>
+        </header>
+        <blockquote>Design an automated cake frosting system that decorates a cake according to a user-inputted design</blockquote>
+    </section>
+    <section>
+        <header>
+            <h3>Design Constraints</h3>
+        </header>
+        <ul class="default">
+            <li>Needs to frost a 9" x 13" x 3" cake</li>
+            <li>Food safe</li>
+            <li>Needs to be able to use round and star frosting tips</li>
+            <li>Minimize user maintenance and involvement</li>
+        </ul>
+    </section>
+    <section>
+        <header>
+            <h3>Design Process</h3>
+        </header>
+        <p>In order to design this system we decided to split the project into 3 major subsytems, dispenser, plotter and controls.
+            Research was then done on each individual subsystem to develop an intial design as shown in the image above. For the dispenser we
+            are using an off the shelf frosting syringe with a 3D printed mount where the plunger is actuated by a lead screw connected to a motor.
+            From testing this initial prototype we will be able to garner key insights into what works and doesn't work which will inform our
+            decisions when making our own custom dispenser. The plotter is based off of an open source CNC machine build which we will modify to suit
+            our needs. The main controller will be based off of an Arduino mega.
+        </p>
+    </section>
+    <section>
+        <header>
+            <h3>Current Status & Next Steps</h3>
+        </header>
+        <p>Currently, we have finished testing the initial dispenser prototype and have begun our second iteration of the dispenser. The plotter is
+        in the process of being built and the motors have been tested and work well with the control system. In terms of software we are currently
+        able to take a user uploaded image and map them to instructions that will be understood by the Arduino which controls the motors on the plotter.
+        </p>
+    </section>
+
+</div>
+</body>
+</html>
