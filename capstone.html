@@ -12,7 +12,7 @@
 </head>
 <body>
 <div class="box container">
-    <a href="https://monsuratolaosebikan.github.io/monsurat-portfolio/"><i class="fa fa-long-arrow-left fa-lg" aria-hidden="true"></i>
+    <a href="index.html"><i class="fa fa-long-arrow-left fa-lg" aria-hidden="true"></i>
      Back to Projects
     </a>
     <header>
@@ -21,7 +21,7 @@
     <hr />
     <section>
         <img style="width:100%;" src="images/cake.png">
-        <p align="center">Initial Cake Decorator Design</p>
+        <p align="center">Figure 1: Initial Cake Decorator Design</p>
 
     </section>
 <hr />
@@ -29,7 +29,8 @@
         <header>
             <h3>Objective</h3>
         </header>
-        <blockquote>Figure 1: Design an automated cake frosting system that decorates a cake according to a user-inputted design</blockquote>
+        <blockquote>Design a machine that automatically frosts a cake according to a image uploaded by the user using star
+            and round frosting tips to reduce the time and effort required to decorate a cake by a home cook.</blockquote>
     </section>
     <section>
         <header>
@@ -47,11 +48,41 @@
             <h3>Design Process</h3>
         </header>
         <p>In order to design this system we decided to split the project into 3 major subsytems, dispenser, plotter and controls.
-            Research was then done on each individual subsystem to develop an intial design as shown in the image above. For the dispenser we
-            are using an off the shelf frosting syringe with a 3D printed mount where the plunger is actuated by a lead screw connected to a motor.
+            Research was then done on each individual subsystem to develop an intial design as shown in Figure 1 above. For the dispenser we
+            are using an off the shelf frosting syringe with a 3D printed mount we designed where the plunger is actuated by a lead screw connected to a motor.
             From testing this initial prototype we will be able to garner key insights into what works and doesn't work which will inform our
             decisions when making our own custom dispenser. The plotter is based off of an open source CNC machine build which we will modify to suit
-            our needs. The main controller will be based off of an Arduino mega.
+            our needs. The main controller uses an Arduino mega and a Raspberry Pi 3.
+        </p>
+    </section>
+    <section>
+        <header>
+            <h3>Challenges</h3>
+        </header>
+        <p><strong><em>Motor Binding:</em></strong>
+            As shown in Figure 1 above there are 2 motors in parallel driving the Y axis. The reason we originally chose this design was because we thought
+            having two motors in parallel would prevent one side of the gantry from dragging the other along. However, we found that running both motors in parallel caused
+            binding in the belts when the pulleys where rotated by the motor shaft. To fix this issue we tried using only one motor but left the wheels on the
+            on the motor-less end of the axis so that it would still be guided along the rail and it now works smoothly. Figure 2 below shows the plotter partially built without
+            the z axis.
+        </p>
+        <div align="center"><img src="images/plotter.png" style="width:70%"/>
+            <p>Figure 2: Partially built plotter</p>
+        </div>
+        <p><strong><em>Image Processing:</em></strong>
+            In order to frost the cake we needed to take an image and convert it into instructions that could be understood by our machine. To do this we settled
+            on the machine language popularly used in 3D printers and CNC machines called G-Code. G-code allows me to write code that tells the machine where to go
+            in terms of X,Y, and Z coordinates and how much frosting to dispense. When the user uploads their desired image it is downsized to a pixel size that more
+            realistically fits on a 9"x13" cake surface and then each pixel is mapped to a dot as shown in Figure 3 below which represents rosettes. The user can then
+            edit the dot colors as they see fit. G-Code is then generated based on the location of each dot's center where a specific amount of frosting will be dispensed at each point.
+        </p>
+        <div align="center"><img src="images/dotmatrix.png" style="width:70%"/>
+            <p>Figure 3: Image to dot matrix transformation</p>
+        </div>
+        <p><strong><em>Supporting Multiple Colors:</em></strong>
+            Most images consist of multiple colors so we needed a way for the machine to be able to support multiple colors. For simplicity it was decided that it would
+            be easiest for the user to swap out the colors manually. There is a G-Code command to stop and wait for user input so we will be using that to tell the machine
+            to stop and wait for the user to put in the next frosting before continuing the frosting job.
         </p>
     </section>
     <section>
