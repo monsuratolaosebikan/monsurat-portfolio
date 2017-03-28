@@ -1,0 +1,10 @@
+li {
+    display: list-item;
+    list-style-position: inside;
+}
+
+ol li {
+    display:list-item !important;
+    list-style-position: inside !important;
+
+}
