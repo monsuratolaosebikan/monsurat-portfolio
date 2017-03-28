@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="assets/css/main.css" />
     <!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <link rel=stylesheet href="assets/css/styles.css"/>
+
+
 </head>
 <body>
 <div class="box container">
@@ -32,19 +35,6 @@
     </section>
     <section>
         <header>
-            <h3>Challenges</h3>
-        </header>
-        <p>When initially designing this app I only had experience developing mobile apps for android
-            but a large part of our members had iOS and a small portion had Windows phones. I did some research
-            into hybrid mobile app platforms and came across ionic which was used in the first iteration of this
-            app but I have since transitioned to React Native which is a more native experience.
-
-            Learning these two platforms on my own was a bit of learning curve because I needed to improve my JavaScript
-            skills and learn a new version of Firebase.</p>
-
-    </section>
-    <section>
-        <header>
             <h3>Technologies Used</h3>
         </header>
         <ul class="default">
@@ -57,6 +47,124 @@
     </section>
     <section>
         <header>
+            <h3>Challenges</h3>
+        </header>
+        <p>When initially designing this app I only had experience developing mobile apps for android
+            but a large part of our members had iOS and a small portion had Windows phones. I did some research
+            into hybrid mobile app platforms and came across ionic which was used in the first iteration of this
+            app but I have since transitioned to React Native which is a more native experience. Learning these two
+            platforms on my own was a bit of learning curve because I needed to improve my JavaScript skills and learn
+            a new version of Firebase.</p>
+
+            <p>The biggest challenge for me in making this app was the real time chat. At first you might think it's pretty straightforward,
+            you select a person you want to chat with and open a new chat dialogue with the person. But what about chat history,how the data
+            is organized, the interaction where each new message gets added to the bottom of the screen and the rest scrolls up or the fact that
+                there are about 5 entry points in total for private and group chats.</p>
+            <h5 style="text-align: left">Gotcha's that I ran into and how I fixed them:</h5>
+            <ol>
+                <li>
+                    <p><strong><em>Real Time Messaging:</em></strong>
+                        When you send a chat message someone you expect them to receive it instantaneously. In order to get that same experience
+                        in the app I decided to use Firebase's realtime database which allows me to create a "socket" that users can be attached
+                        as a listener to so they can send and receive messages in real time.
+                    </p>
+                </li>
+                <li>
+                    <p><strong><em>Routing:</em></strong>
+                        When you think of any popular messaging app there are multiple ways to start a new chat and there are two different types
+                        1-on-1 and groups. For a 1-on-1 chat the flow usually goes:</p>
+                        <div align="center"><img src="images/chatworkflow.png" style="width:30%"/>
+                        <p>Figure 2: 1-on-1 chat flow</p></div>
+                        <p>The user can get to the chat by either creating a new chat or clicking on an existing chat in the main view. Both of these
+                        entry points require that we first check the database to check if the chat exists, if it does we can get the chat history
+                        and display it to the user and if it doesn't we create a new blank chat for them to send their first message. So the database
+                        needed to be structured in a way that allows for quick checking if a chat for the two people is already present and fetch its
+                            history if it is.</p>
+                </li>
+                <li>
+                    <p><strong><em>Structuring Data:</em></strong>
+                        The problem at hand is how should I structure my noSQL database in a way that would allow me to quickly determine
+                        all the chatrooms a user is in, whether or not a chat had already been started with a specific user and show chat
+                        history. The list below shows what the optimal data structure would allow me to do.
+                        <ol>
+                            <li>1. Find all the chat rooms a user is a part of</li>
+                            <li>2. Find the past messages of a chat</li>
+                            <li>3. Allow the user to create a new group chat</li>
+                            <li>4. Allow the user to create a new 1-on-1 chat</li>
+                        </ol>
+                        I had to restructure the data quite a few times to finally get it right in a way that would allow me to access the
+                        data I needed regardless of the user's entry point. At first I structured it where only 1-on-1 conversations were
+                        possible. However, when I started adding group chat functionlaity I realized I needed a way to differentiate between
+                        group and 1-on-1 chats which is why I added the fields type, groupName, and included a list of all the chats a user
+                        is in within their user object. The format I finally settled on is shown below.<br><br>
+
+                        <pre class="prettyprint">
+                                chats: {
+                                    randomkey1: {
+                                        groupName: 'Party'
+                                        members: {
+                                            userid1: {
+                                                name: 'Mary Lou'
+                                            }
+                                            userid2: {
+                                                name: 'John Snow'
+                                            }
+                                        messages: {
+                                            randomMessageKey: {
+                                                id_: 4545235
+                                                createdAt: 245242542
+                                                text: 'Where is the party tonight?'
+                                                uid: NFEI45DJ4L4K44Y3
+                                            }
+                                        }
+                                    }
+                                    randomkey2: {
+                                        members: {
+                                            userid1: true
+                                            userid2: true
+                                        messages: {
+                                            randomMessageKey: {
+                                                id_: 6756756
+                                                createdAt: 10685454
+                                                text: 'Hi John, how are you!'
+                                                uid: NFEI45DJ4L4K44Y3
+                                            }
+                                        }
+                                    }
+                                }
+                                users: {
+                                    userid1:
+                                    chats: {
+                                        chatid1: {
+                                            id: 49nrjwl490
+                                            name: 'Party'
+                                            type: 'group'
+                                        }
+                                        chatid2: {
+                                            id: 0960eflwgf
+                                            name: 'Tom Doe'
+                                            type: 'one'
+                                        }
+                                    }
+                                    email: 'john@snow.com'
+                                    name: 'John Snow'
+                                    uid: 9934er38fh43
+                                }
+                        </pre>
+
+                </li>
+                <br>
+                <li>
+                    <p><strong><em>User Interface:</em></strong>
+                        At first I had a very basic list style interface for chat messages with no fancy chat bubbles and once I got
+                        the basic functionality working I switched over to an open source library called gifted-chat that gave me the
+                        basic ui I needed to then build on top of and adapt to fit my app style.
+                    </p>
+                </li>
+            </ol>
+    </section>
+    <section>
+        <header>
             <h3>Next Steps</h3>
         </header>
         <p>Now that the app has basic functionality implemented (i.e adding events, and news posts) the next step is to add the ability
@@ -65,5 +173,7 @@
     </section>
 
 </div>
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+
 </body>
 </html>
